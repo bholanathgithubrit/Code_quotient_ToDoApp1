@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body align="center">
+    <h1>Add Your Task Here</h1>
+    <div id="from">
+        Title: <input type="text" id="title"/><br/><br/>
+        Id: <input type="number" id="number"/><br/><br/>
+        Status:<input type="text" id="status"/><br/><br/>
+        <button id="btn">submit</button><br/><br/>
+    </div>
+    <div>
+        <h1>Search Your Task  Here</h1>
+        Status:<input type="text" id="input_status"/><br/><br/>
+        <button id="submit">Submit</button>
+    </div>
+    <script>
+        document.querySelector('#btn').addEventListener('click',async ()=>{
+            let title=document.querySelector('#title').value.trim();
+            let number=document.querySelector('#number').value.trim();
+            let status=document.querySelector('#status').value.trim();
+            let response=await fetch('http://localhost:3030/addTask',{
+                method:'POST',
+                'Content-Type':'text/plain',
+                body:JSON.stringify({'title':title,'id':number,'status':status})
+            })
+            let data=response.json();
+            console.log(data);
+        })
+        document.querySelector('#submit').addEventListener('click',async (e)=>{
+            e.preventDefault();
+            let search=document.querySelector('#input_status').value.trim();
+            let response=await fetch('http://localhost:3030/tasks?status='+search);
+            let data=await response.json();
+            console.log(data);
+        })
+    </script>
+</body>
+</html>
